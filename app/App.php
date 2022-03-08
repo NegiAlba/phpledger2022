@@ -37,7 +37,9 @@ function getTransactions(string $fileName, ?callable $transactionHandler = null)
     $transactions = [];
 
     while (($transaction = fgetcsv($file)) !== false) {
-        //? Rajouter le traitement de la ligne de transaction par un callable
+        if (null !== $transactionHandler) {
+            $transaction = $transactionHandler($transaction);
+        }
         $transactions[] = $transaction;
     }
 
@@ -51,7 +53,8 @@ function extractTransactions(array $transactionRow): array
 {
     [$date, $checkNumber, $description, $amount] = $transactionRow;
 
-    //formater les montants pendant qu'on y est
+    //formater les montants et les dates pendant qu'on y est
+    $amount = str_replace(['$', ','], '', $amount);
 
     return [
         'date' => $date,
@@ -66,10 +69,47 @@ function calculateTotals(array $transactions): array
     $totals = ['netTotal' => 0, 'totalIncome' => 0, 'totalExpense' => 0];
 
     foreach ($transactions as $transaction) {
-        //? La condition match est similaire à switch en ce qu'elle permet de créer des conditions en fonctione de cas spécifiques. match permet aussi de comparer plusieurs cas en même temps et c'est une nouveauté de PHP8
+        $totals['netTotal'] += $transaction['amount'];
+        // $totals['netTotal'] = $totals['netTotal'] + $transaction['amount'];
 
-        //! VOUS N'ETES PAS OBLIGÉS D'UTILISER MATCH
+        //? totalIncome augmente à chaque fois que le montant est positif
+
+        if ($transaction['amount'] >= 0) {
+            $totals['totalIncome'] += $transaction['amount'];
+        } else {
+            $totals['totalExpense'] += $transaction['amount'];
+        }
+        //? totalExpense augmente (ou diminue) à chaque fois que le montant est négatif
+
+        //? La condition match est similaire à switch en ce qu'elle permet de créer des conditions en fonctione de cas spécifiques. match permet aussi de comparer plusieurs cas en même temps et c'est une nouveauté de PHP8
+        // match ($transaction['amount']) {
+        //     $transaction['amount'] > 0 => $totals['totalIncome'] += $transaction['amount'],
+        //     $transaction['amount'] < 0 => $totals['totalExpense'] -= $transaction['amount']
+        // };
     }
 
     return $totals;
+}
+
+function exportCSV($array, $filename = 'export.csv', $delimiter = ';')
+{
+    header('Content-Type: application/csv');
+    header('Content-Disposition: attachment; filename="'.$filename.'";');
+
+    // clean output buffer
+    ob_end_clean();
+
+    $handle = fopen('php://output', 'w');
+
+    // use keys as column titles
+    fputcsv($handle, array_keys($array['0']), $delimiter);
+
+    foreach ($array as $value) {
+        fputcsv($handle, $value, $delimiter);
+    }
+
+    fclose($handle);
+
+    // use exit to get rid of unexpected output afterward
+    exit();
 }

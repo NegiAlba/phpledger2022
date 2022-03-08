@@ -19,13 +19,8 @@ foreach ($files as $file) {
 }
 
 // Sort the entire array by date
-//? Same sh*t
-// usort($transactions, function ($a, $b) {
-//    return strtotime($a['date']) - strtotime($b['date']);
-// });
-
 usort($transactions, fn ($a, $b) => strtotime($a['date']) - strtotime($b['date']));
 
 $totals = calculateTotals($transactions);
 
-require VIEWS_PATH.'transactions.php';
+exportCSV($transactions);

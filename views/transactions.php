@@ -29,6 +29,11 @@
 
 <body>
     <?php require_once 'navbar.php'; ?>
+    <div class="container text-end my-3">
+        <a href="download.php" class="btn btn-primary">
+            Export CSV
+        </a>
+    </div>
     <table>
         <thead>
             <tr>
@@ -43,15 +48,15 @@
                 <td><?php echo formatDate('03/08/2022'); ?></td>
                 <td>0950</td>
                 <td>???</td>
-                <td>Très cher</td>
+                <td><?php echo formatDollarDisplay(13579.24615411424); ?></td>
             </tr>
             <?php if (!empty($transactions)) { ?>
             <?php foreach ($transactions as $transaction) { ?>
             <tr>
-                <td><?php echo $transaction['date']; ?></td>
+                <td><?php echo formatDate($transaction['date']); ?></td>
                 <td><?php echo $transaction['checkNumber']; ?></td>
                 <td><?php echo $transaction['description']; ?></td>
-                <td><?php echo $transaction['amount']; ?></td>
+                <td><?php echo formatDollarDisplay($transaction['amount']); ?></td>
             </tr>
             <?php } ?>
             <?php } ?>
@@ -60,19 +65,19 @@
             <tr>
                 <th colspan="3">Total Income:</th>
                 <td>
-                    <?php echo "{$totals['totalIncome']}"; ?>
+                    <?php echo formatDollarDisplay($totals['totalIncome']); ?>
                 </td>
             </tr>
             <tr>
                 <th colspan="3">Total Expense:</th>
                 <td>
-                    <?php echo "{$totals['totalExpense']}"; ?>
+                    <?php echo formatDollarDisplay($totals['totalExpense']); ?>
                 </td>
             </tr>
             <tr>
                 <th colspan="3">Net Total:</th>
                 <td>
-                    <?php echo "{$totals['netTotal']}"; ?>
+                    <?php echo formatDollarDisplay($totals['netTotal']); ?>
                 </td>
             </tr>
         </tfoot>

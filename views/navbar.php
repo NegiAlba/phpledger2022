@@ -3,9 +3,7 @@
 <nav class="navbar navbar-light bg-light">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">
-            <img src="/docs/5.1/assets/brand/bootstrap-logo.svg" alt="" width="30" height="24"
-                class="d-inline-block align-text-top">
-            Bootstrap
+            <img src="phpledger.gif" alt="" width="50" height="50" class="d-inline-block align-text-top">
         </a>
     </div>
 </nav>
