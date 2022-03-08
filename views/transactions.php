@@ -45,12 +45,9 @@
                 <td>???</td>
                 <td>Très cher</td>
             </tr>
-            <tr>
-                <td><?php echo $transactions[0][0]; ?></td>
-                <td><?php echo $transactions[0][1]; ?></td>
-                <td><?php echo $transactions[0][2]; ?></td>
-                <td><?php echo $transactions[0][3]; ?></td>
-            </tr>
+            <?php
+                displayTransactions($transactions);
+            ?>
         </tbody>
         <tfoot>
             <tr>

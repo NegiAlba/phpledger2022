@@ -16,9 +16,9 @@ print_r(getTransactionFiles(FILES_PATH));
 echo '</pre>';
 
 echo '<pre>';
-print_r(getTransactions('C:\xampp\htdocs\phpledger\transaction_files\example.csv'));
+print_r($transactions = getTransactions('C:\xampp\htdocs\phpledger\transaction_files\example.csv'));
 echo '</pre>';
 
-$transactions = getTransactions('C:\xampp\htdocs\phpledger\transaction_files\example.csv');
+//  getTransactions('C:\xampp\htdocs\phpledger\transaction_files\example.csv');
 
 require VIEWS_PATH.'transactions.php';
