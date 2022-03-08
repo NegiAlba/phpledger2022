@@ -40,32 +40,39 @@
         </thead>
         <tbody>
             <tr>
-                <td>Aujourd'hui</td>
+                <td><?php echo formatDate('03/08/2022'); ?></td>
                 <td>0950</td>
                 <td>???</td>
                 <td>Très cher</td>
             </tr>
-            <?php
-                displayTransactions($transactions);
-            ?>
+            <?php if (!empty($transactions)) { ?>
+            <?php foreach ($transactions as $transaction) { ?>
+            <tr>
+                <td><?php echo $transaction['date']; ?></td>
+                <td><?php echo $transaction['checkNumber']; ?></td>
+                <td><?php echo $transaction['description']; ?></td>
+                <td><?php echo $transaction['amount']; ?></td>
+            </tr>
+            <?php } ?>
+            <?php } ?>
         </tbody>
         <tfoot>
             <tr>
                 <th colspan="3">Total Income:</th>
                 <td>
-                    <!-- YOUR CODE -->
+                    <?php echo "{$totals['totalIncome']}"; ?>
                 </td>
             </tr>
             <tr>
                 <th colspan="3">Total Expense:</th>
                 <td>
-                    <!-- YOUR CODE -->
+                    <?php echo "{$totals['totalExpense']}"; ?>
                 </td>
             </tr>
             <tr>
                 <th colspan="3">Net Total:</th>
                 <td>
-                    <!-- YOUR CODE -->
+                    <?php echo "{$totals['netTotal']}"; ?>
                 </td>
             </tr>
         </tfoot>

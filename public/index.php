@@ -8,17 +8,16 @@ define('FILES_PATH', $root.'transaction_files'.DIRECTORY_SEPARATOR);
 define('VIEWS_PATH', $root.'views'.DIRECTORY_SEPARATOR);
 
 require APP_PATH.'App.php';
+require APP_PATH.'helpers.php';
 
-getTransactionFiles(FILES_PATH);
+$files = getTransactionFiles(FILES_PATH);
+$transactions = [];
 
-echo '<pre>';
-print_r(getTransactionFiles(FILES_PATH));
-echo '</pre>';
+// Pour chaque fichier qui existe dans le dossier transaction_files, ajoute ses informations à la suite du tableau $transactions.
+foreach ($files as $file) {
+    $transactions = array_merge($transactions, getTransactions($file, 'extractTransactions'));
+}
 
-echo '<pre>';
-print_r($transactions = getTransactions('C:\xampp\htdocs\phpledger\transaction_files\example.csv'));
-echo '</pre>';
-
-//  getTransactions('C:\xampp\htdocs\phpledger\transaction_files\example.csv');
+$totals = 0;
 
 require VIEWS_PATH.'transactions.php';

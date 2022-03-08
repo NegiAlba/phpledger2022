@@ -25,7 +25,7 @@ function getTransactionFiles(string $dirPath): array
 /**
  * Fonction qui permet de récupérer le contenu d'un fichier CSV contenant des transactions.
  */
-function getTransactions(string $fileName): array
+function getTransactions(string $fileName, ?callable $transactionHandler = null): array
 {
     if (!file_exists($fileName)) {
         trigger_error("File $fileName does not exist", E_USER_ERROR);
@@ -37,6 +37,7 @@ function getTransactions(string $fileName): array
     $transactions = [];
 
     while (($transaction = fgetcsv($file)) !== false) {
+        //? Rajouter le traitement de la ligne de transaction par un callable
         $transactions[] = $transaction;
     }
 
@@ -50,8 +51,7 @@ function extractTransactions(array $transactionRow): array
 {
     [$date, $checkNumber, $description, $amount] = $transactionRow;
 
-    //formater les montants et les dates pendant qu'on y est
-    $amount = str_replace(['$', ','], '', $amount);
+    //formater les montants pendant qu'on y est
 
     return [
         'date' => $date,
@@ -61,18 +61,15 @@ function extractTransactions(array $transactionRow): array
     ];
 }
 
-/**
- * Fonction qui permet d'afficher les transactions contenues sous forme d'une ligne d'un tableau HTML.
- */
-function displayTransactions(array $transactions): void
+function calculateTotals(array $transactions): array
 {
+    $totals = ['netTotal' => 0, 'totalIncome' => 0, 'totalExpense' => 0];
+
     foreach ($transactions as $transaction) {
-        echo '<tr>';
-        foreach (extractTransactions($transaction) as $field) {
-            echo "<td> {$field} </td>";
-        }
-        echo '</tr>';
+        //? La condition match est similaire à switch en ce qu'elle permet de créer des conditions en fonctione de cas spécifiques. match permet aussi de comparer plusieurs cas en même temps et c'est une nouveauté de PHP8
+
+        //! VOUS N'ETES PAS OBLIGÉS D'UTILISER MATCH
     }
 
-    return;
+    return $totals;
 }
